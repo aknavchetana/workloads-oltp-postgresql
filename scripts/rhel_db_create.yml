@@ -1,0 +1,40 @@
+- name: "Install PostgreSQL"
+  hosts: all
+  become: 'True'
+  vars:
+    db_name: pr_dbname
+    db_password: pr_dbpassword
+    db_user: pr_dbusername
+    #login_socket: "/var/lib/postgresql/.s.PGSQL.5432"
+  tasks:
+    - name: "install acl"
+      yum:
+        name: acl
+        state: present
+    - name: "Create app database"
+      postgresql_db:
+              #login_unix_socket: "{{ login_socket }}"
+        #/var/run/postgresql/.s.PGSQL.5432
+        state: present
+        name: "{{ db_name }}"
+        #login_user: root
+      become: yes
+      become_user: postgres
+    - name: "Create db user"
+      postgresql_user:
+        state: present
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        #login_user: root
+      become: yes
+      become_user: postgres
+    - name: "Grant db user access to app db"
+      postgresql_privs:
+        type: database
+        database: "{{ db_name }}"
+        roles: "{{ db_user }}"
+        grant_option: no
+        privs: all
+      become: yes
+      become_user: postgres
+

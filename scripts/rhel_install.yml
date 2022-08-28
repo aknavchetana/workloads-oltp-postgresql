@@ -1,0 +1,67 @@
+- name: "Install Postgresql"
+  hosts: all
+  become: 'True'
+  tasks:
+    - name: "update and upgrade packages"
+      yum: "update_only=yes update_cache=yes"
+      become: yes
+      become_user: root
+
+    - name: "install postgresql package"
+      dnf: "name=postgresql state=present"
+      become: yes
+      become_user: root
+
+    - name: "install server"
+      dnf: "name=postgresql-server state=present"
+      become: yes
+      become_user: root
+
+    - name: "install python3-pip"
+#dnf: "name=python3-pip state=present"
+#shell: echo $(yum install python3-pip)
+      shell: echo $(sudo python3 -m pip install -U pip)
+      become: yes
+      become_user: root
+
+    - name: "install python3-pip"
+      shell: echo $(sudo python3 -m pip install -U setuptools)
+      become: yes
+      become_user: root
+
+    - name: install python3-dev
+      dnf:
+        name=python3-devel
+        state=latest
+      become: yes
+      become_user: root
+
+    - name: "install python psycopg2"
+      #pip3:
+      #name: psycopg2-binary
+      shell: echo $(sudo pip3 install psycopg2)
+      become: yes
+      become_user: root
+
+    - name: "install libpostgresqlclient-dev"
+      shell: echo $(sudo yum libpq-dev)
+      become: yes
+      become_user: root
+
+    - name: "find out if postgresql is initialized"
+      ansible.builtin.stat:
+             path: "/var/lib/pgsql/data/pg_hba.conf"
+      register: postgres_data
+      become: yes
+      become_user: root
+
+    - name: "initialize postgresql"
+      shell: "postgresql-setup initdb"
+      when: not postgres_data.stat.exists
+      become: yes
+      become_user: root
+
+    - name: "start and enable services"
+#service: "name=postgresql state=started enabled=yes"
+      shell: echo $(service postgresql start)
+      become: yes

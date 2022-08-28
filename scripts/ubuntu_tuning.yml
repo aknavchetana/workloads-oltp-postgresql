@@ -1,0 +1,282 @@
+- name: "postgresql configuration"
+  vars:
+        postgresql_version: 12
+  hosts: all
+  become: 'True'
+  tasks:
+  - name: set listen_address
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "listen_addresses ="
+     line: "listen_addresses = localhost"
+     state: present
+
+  - name: set port
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "port ="
+     line: "port = 5432"
+     state: present
+
+  - name: set max_connections
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "max_connections ="
+     line: "max_connections = 256"
+     state: present
+
+     #- name: set shared_buffers
+     #lineinfile:
+     #dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     #regexp: "shared_buffers ="
+     #line: "shared_buffers = 64000MB"
+     #state: present
+
+     #- name: set huge_pages
+     #lineinfile:
+     #dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     #regexp: "huge_pages ="
+     #line: "huges_pages = on"
+     #state: present
+
+     #- name : set temp_buffers
+     #lineinfile:
+     #dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     #regexp: "temp_buffers ="
+     #line: "temp_buffers = 4000MB"
+     #state: present
+
+     #- name: set work_mem
+     #lineinfile:
+     #dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     #regexp: "work_mem ="
+     #line: "work_mem = 4000MB"
+     #state: present
+
+     #- name: set maintenance_work_mem
+     #lineinfile:
+     #dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     #regexp: "maintenance_work_mem ="
+     #line: "maintenance_work_mem = 512MB"
+     #state: present
+
+     #- name: set autovacuum_work_mem
+     #lineinfile:
+     #dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     #regexp: "autovacuum_work_mem ="
+     #line: "autovacuum_work_mem = -1"
+     #state: present
+
+     #- name: set max_stack_depth
+     #lineinfile:
+     #dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     #regexp: "max_stack_depth ="
+     #line: "max_stack_depth = 7MB"
+     #state: present
+
+  - name: set dynamic_shared_memory_type
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "dynamic_shared_memory_type ="
+     line: "dynamic_shared_memory_type = posix"
+     state: present
+
+  - name: set max_files_per_process
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "max_files_per_process ="
+     line: "max_files_per_process = 4000"
+     state: present
+
+  - name: set effective_io_concurrency
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "effective_io_concurrency ="
+     line: "effective_io_concurrency = 32"
+     state: present
+
+  - name: wal_level
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "wal_level ="
+     line: "wal_level = minimal"
+     state: present
+
+  - name: set synchronous_commit
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "synchronous_commit ="
+     line: "synchronous_commit = on"
+     state: present
+
+  - name: set wal_buffers
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "wal_buffers ="
+     line: "wal_buffers = 512MB"
+     state: present
+
+  - name: set cpu_tuple_cost
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "cpu_tuple_cost ="
+     line: "cpu_tuple_cost = 0.03"
+     state: present
+
+  - name: set effective_cache_size
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "effective_cache_size ="
+     line: "effective_cache_size = 350GB"
+     state: present
+
+  - name: set random_page_cost
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "random_page_cost ="
+     line: "random_page_cost = 1.1"
+     state: present
+
+  - name: set checkpoint_timeout
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "checkpoint_timeout ="
+     line: "checkpoint_timeout = 1h"
+     state: present
+
+  - name: set checkpoint_completion_target
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "checkpoint_completion_target ="
+     line: "checkpoint_completion_target = 0.9"
+     state: present
+
+  - name: set checkpoint_warning
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "checkpoint_warning ="
+     line: "checkpoint_warning = 1"
+     state: present
+
+  - name: set log_min_messages
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "log_min_messages ="
+     line: "log_min_messages = error"
+     state: present
+
+  - name: set log_min_error_statement
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "log_min_error_statement ="
+     line: "log_min_error_statement = error"
+     state: present
+
+  - name: set autovacuum
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "autovacuum ="
+     line: "autovacuum = on"
+     state: present
+
+  - name: set autovacuum_max_workers
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "autovacuum_max_workers ="
+     line: "autovacuum_max_workers = 10"
+     state: present
+
+  - name: set autovacuum_vacuum_cost_limit
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "autovacuum_vacuum_cost_limit ="
+     line: "autovacuum_vacuum_cost_limit = 3000"
+     state: present
+
+  - name: set datestyle
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "datestyle ="
+     line: "datestyle = 'iso, dmy'"
+     state: present
+
+  - name: set lc_messages
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "lc_messages ="
+     line: "lc_messages = 'en_US.UTF-8'"
+     state: present
+
+  - name: set lc_monetary
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "lc_monetary ="
+     line: "lc_monetary = 'en_US.UTF-8'"
+     state: present
+
+  - name: set lc_numeric
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "lc_numeric ="
+     line: "lc_numeric = 'en_US.UTF-8'"
+     state: present
+
+  - name: set lc_time
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "lc_time ="
+     line: "lc_time = 'en_US.UTF-8'"
+     state: present
+
+  - name: set default_text_search_config
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "default_text_search_config ="
+     line: "default_text_search_config = 'pg_catalog.english'"
+     state: present
+
+  - name: set max_locks_per_transaction
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "max_locks_per_transaction ="
+     line: "max_locks_per_transaction = 64"
+     state: present
+
+  - name: set max_pred_locks_per_transaction
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "max_pred_locks_per_transaction ="
+     line: "max_pred_locks_per_transaction = 64"
+     state: present
+
+  - name: set archive_mode
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "archive_mode ="
+     line: "archive_mode = off"
+     state: present
+
+  - name: set max_wal_senders
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "max_wal_senders ="
+     line: "max_wal_senders = 0"
+     state: present
+
+  - name: set min_wal_size
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "min_wal_size ="
+     line: "min_wal_size = 8192"
+     state: present
+
+  - name: set max_wal_size
+    lineinfile:
+     dest: /etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+     regexp: "max_wal_size ="
+     line: "max_wal_size = 524288"
+     state: present
+
+  - name: restart postgres
+    service: name=postgresql state=restarted
+

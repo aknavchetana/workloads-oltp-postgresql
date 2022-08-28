@@ -1,0 +1,39 @@
+- name: "Install PostgreSQL"
+  hosts: all
+  become: 'True'
+  vars:
+    db_name: p_dbname
+    db_password: p_dbpassword
+    db_user: p_dbusername
+  tasks:
+    - name: "install acl"
+      apt:
+       name: acl
+       state: present
+
+    - name: "Create app database"
+      postgresql_db:
+              #login_unix_socket: /var/run/postgresql/
+        state: present
+        name: "{{db_name}}"
+      become: yes
+      become_user: postgres
+
+    - name: "Create db user"
+      postgresql_user:
+        state: present
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        role_attr_flags: "SUPERUSER,CREATEROLE,CREATEDB,REPLICATION,BYPASSRLS"
+      become: yes
+      become_user: postgres
+
+    - name: "Grant db user access to app db"
+      postgresql_privs:
+        type: database
+        database: "{{ db_name }}"
+        roles: "{{ db_user }}"
+        grant_option: no
+        priv: all
+      become: yes
+      become_user: postgres

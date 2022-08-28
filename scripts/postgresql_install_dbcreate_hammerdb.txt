@@ -1,0 +1,50 @@
+HammerDB Installation:
+
+wget https://github.com/TPC-Council/HammerDB/releases/download/v4.1/HammerDB-4.1-Linux.tar.gz
+tar -zxvf HammerDB-4.1-Linux.tar.gz 
+cd HammerDB-4.1
+./hammerdbcli
+
+PSQL Installation :-
+
+sudo apt install postgresql
+sudo apt install libpq-dev
+
+
+
+PSQL DB Creation :-
+
+sudo su postgres
+psql   #enter into psql CLI
+create database p_dbname
+CREATE USER p_dbusername WITH PASSWORD 'P@55w0rd';
+ALTER ROLE p_dbusername WITH SUPERUSER CREATEROLE CREATEDB REPLICATION BYPASSRLS;
+
+
+
+Running HammerDB :-
+
+PostgreSql run workload:
+
+dbset db pg
+diset connection pg_host localhost
+diset connection pg_port 5432
+diset tpcc pg_count_ware 50
+diset tpcc pg_num_vu 10
+diset tpcc pg_superuser p_dbusername
+diset tpcc pg_superuserpass P@55w0rd
+diset tpcc pg_storedprocs false
+vuset logtotemp 1
+vuset unique 1
+buildschema
+
+PostgreSql Test run:
+
+dbset db pg
+diset connection pg_host localhost
+diset connection pg_port 5432
+diset tpcc pg_superuser p_dbusername
+diset tpcc pg_superpass P@55w0rd
+diset tpcc pg_storedprocs false
+vuset logtotemp 1
+vuset unique 1

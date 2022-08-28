@@ -1,0 +1,35 @@
+- name: "Install PostgreSQL"
+  hosts: all
+  become: 'True'
+  tasks:
+  - name: Update and upgrade apt packages
+    apt: update_cache=yes
+    ignore_errors: yes
+
+  - name: Install PostgreSQL
+    apt:
+      name=postgresql
+      state=present
+
+  - name: install python3-pip
+    apt:
+     name=python3-pip
+
+  - name: pypostgresql
+    pip:
+     name: psycopg2-binary
+
+  - name: Install python3-dev
+    apt:
+      name=python3-dev
+      state=latest
+
+  - name: Install libpostgresqlclient-dev
+    apt:
+     name=libpq-dev
+     state=latest
+
+  - name: Start the PostgreSQL service
+    service:
+      name=postgresql
+      state=started
